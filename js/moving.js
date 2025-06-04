@@ -16,17 +16,19 @@ import {
 } from "./loader.js";
 import { scoreValue, frame, isJump, low, scene } from "./app.js";
 import { enemies, enemySpawner } from "./enemies.js";
+import { speedManager } from "./app.js";
 
 let currentRunModel = "one";
 let currentPteroModel = "one";
 let cooler = 15000; // control the speed
 
 const enemiesMove = () => {
+  const speedMultiplier = speedManager.getSpeedMultiplier();
   enemies.map((one) => {
     // check if cactus or ptero
     if (one.position) {
       // move
-      one.position.x += 0.5 + scoreValue / cooler;
+      one.position.x += (0.5 + scoreValue / cooler) * speedMultiplier;
 
       // if not visible
       if (one.position.x > 25) {
@@ -35,12 +37,13 @@ const enemiesMove = () => {
         enemies.pop();
 
         enemySpawner(); // spawn new enemy
+        speedManager.onObstacleCleared(); // Notify speed manager of cleared obstacle
       }
     } else {
       // move
-      one.one.position.x += 0.5 + scoreValue / cooler;
-      one.two.position.x += 0.5 + scoreValue / cooler;
-      one.three.position.x += 0.5 + scoreValue / cooler;
+      one.one.position.x += (0.5 + scoreValue / cooler) * speedMultiplier;
+      one.two.position.x += (0.5 + scoreValue / cooler) * speedMultiplier;
+      one.three.position.x += (0.5 + scoreValue / cooler) * speedMultiplier;
 
       // if not visible
       if (one.one.position.x > 25) {
@@ -50,6 +53,7 @@ const enemiesMove = () => {
         scene.remove(one.three);
         enemies.pop();
         enemySpawner(); // spawn new enemy
+        speedManager.onObstacleCleared(); // Notify speed manager of cleared obstacle
       }
     }
   });
@@ -68,9 +72,11 @@ let decorationsInitialPos = {
 };
 
 export const moving = () => {
+  const speedMultiplier = speedManager.getSpeedMultiplier();
+  
   // TREES
   if (bigTrees[0]) {
-    bigTrees[0].position.x += 0.09;
+    bigTrees[0].position.x += 0.09 * speedMultiplier;
     if (bigTrees[0].position.x > 25) {
       bigTrees[0].position.x =
         decorationsInitialPos.cactuses21 - Math.random() * (-10 - -15) + -15;
@@ -79,7 +85,7 @@ export const moving = () => {
     }
   }
   if (bigTrees[1]) {
-    bigTrees[1].position.x += 0.09;
+    bigTrees[1].position.x += 0.09 * speedMultiplier;
     if (bigTrees[1].position.x > 25) {
       bigTrees[1].position.x =
         decorationsInitialPos.bigtree0 - Math.random() * (-10 - -15) + -15;
@@ -88,7 +94,7 @@ export const moving = () => {
     }
   }
   if (bigTrees[2]) {
-    bigTrees[2].position.x += 0.09;
+    bigTrees[2].position.x += 0.09 * speedMultiplier;
     if (bigTrees[2].position.x > 25) {
       bigTrees[2].position.x =
         decorationsInitialPos.bigtree1 - Math.random() * (-10 - -15) + -15;
@@ -97,7 +103,7 @@ export const moving = () => {
     }
   }
   if (bigTrees[3]) {
-    bigTrees[3].position.x += 0.09;
+    bigTrees[3].position.x += 0.09 * speedMultiplier;
     if (bigTrees[3].position.x > 25) {
       bigTrees[3].position.x =
         decorationsInitialPos.bigtree2 - Math.random() * (-10 - -15) + -15;
@@ -107,7 +113,7 @@ export const moving = () => {
   }
 
   if (cactuses1[0]) {
-    cactuses1[0].position.x += 0.09;
+    cactuses1[0].position.x += 0.09 * speedMultiplier;
     if (cactuses1[0].position.x > 25) {
       cactuses1[0].position.x =
         decorationsInitialPos.bigtree3 - Math.random() * (-10 - -15) + -15;
@@ -116,7 +122,7 @@ export const moving = () => {
     }
   }
   if (cactuses1[1]) {
-    cactuses1[1].position.x += 0.09;
+    cactuses1[1].position.x += 0.09 * speedMultiplier;
     if (cactuses1[1].position.x > 25) {
       cactuses1[1].position.x =
         decorationsInitialPos.cactuses10 - Math.random() * (-10 - -15) + -15;
@@ -126,7 +132,7 @@ export const moving = () => {
   }
 
   if (cactuses2[0]) {
-    cactuses2[0].position.x += 0.09;
+    cactuses2[0].position.x += 0.09 * speedMultiplier;
     if (cactuses2[0].position.x > 25) {
       cactuses2[0].position.x =
         decorationsInitialPos.cactuses11 - Math.random() * (-10 - -15) + -15;
@@ -135,7 +141,7 @@ export const moving = () => {
     }
   }
   if (cactuses2[1]) {
-    cactuses2[1].position.x += 0.09;
+    cactuses2[1].position.x += 0.09 * speedMultiplier;
     if (cactuses2[1].position.x > 25) {
       cactuses2[1].position.x =
         decorationsInitialPos.cactuses20 - Math.random() * (-10 - -15) + -15;
@@ -148,31 +154,31 @@ export const moving = () => {
   if (runningFloor) {
     runningFloor.position.x > 130
       ? (runningFloor.position.x = -345)
-      : (runningFloor.position.x += 0.5 + scoreValue / cooler);
+      : (runningFloor.position.x += (0.5 + scoreValue / cooler) * speedMultiplier);
   }
   if (runningFloor1) {
     runningFloor1.position.x > 130
       ? (runningFloor1.position.x = -345)
-      : (runningFloor1.position.x += 0.5 + scoreValue / cooler);
+      : (runningFloor1.position.x += (0.5 + scoreValue / cooler) * speedMultiplier);
   }
 
   // river
   if (water) {
     water.position.x > 130
       ? (water.position.x = -345)
-      : (water.position.x += 0.5 + scoreValue / cooler);
+      : (water.position.x += (0.5 + scoreValue / cooler) * speedMultiplier);
   }
   if (water1) {
     water1.position.x > 130
       ? (water1.position.x = -345)
-      : (water1.position.x += 0.5 + scoreValue / cooler);
+      : (water1.position.x += (0.5 + scoreValue / cooler) * speedMultiplier);
   }
 
   // mountain
   if (firstM) {
     firstM.position.x > 111
       ? (firstM.position.x = -120)
-      : (firstM.position.x += 0.07);
+      : (firstM.position.x += 0.07 * speedMultiplier);
   }
 
   // changing models to have 'animation' effect
@@ -185,9 +191,9 @@ export const moving = () => {
   ) {
     playerModelJump.visible = false;
     if (playerModel1.position.x > 9) {
-      playerModel1.position.x -= 0.3 + scoreValue / cooler;
-      playerModel2.position.x -= 0.3 + scoreValue / cooler;
-      playerModel3.position.x -= 0.3 + scoreValue / cooler;
+      playerModel1.position.x -= (0.3 + scoreValue / cooler) * speedMultiplier;
+      playerModel2.position.x -= (0.3 + scoreValue / cooler) * speedMultiplier;
+      playerModel3.position.x -= (0.3 + scoreValue / cooler) * speedMultiplier;
     }
     if (currentRunModel === "one") {
       if (low) {

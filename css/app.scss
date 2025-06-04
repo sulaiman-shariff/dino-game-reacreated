@@ -135,3 +135,83 @@ body {
     
    
 }
+#inversionWarningBanner {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 2.5em;
+  color: #FFD700;
+  background: rgba(0,0,0,0.85);
+  border: 3px solid #FFD700;
+  border-radius: 10px;
+  z-index: 1000;
+  opacity: 0.95;
+  pointer-events: none;
+  display: none;
+  animation: flash-warning 0.5s linear 2;
+}
+@keyframes flash-warning {
+  0%, 100% { opacity: 0.95; }
+  25% { opacity: 0.2; }
+  50% { opacity: 0.95; }
+  75% { opacity: 0.2; }
+}
+#inversionIndicator {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 30px;
+  font-size: 2.5em;
+  color: #FF0000;
+  background: rgba(0,0,0,0.85);
+  border: 3px solid #FF0000;
+  border-radius: 10px;
+  font-weight: bold;
+  z-index: 1001;
+  pointer-events: none;
+  display: none;
+  animation: blink-invert 1s steps(2, start) infinite;
+}
+@keyframes blink-invert {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+#revertWarningBanner {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 30px;
+  font-size: 2.5em;
+  color: #FFA500;
+  background: rgba(0,0,0,0.85);
+  border: 3px solid #FFA500;
+  border-radius: 10px;
+  z-index: 1002;
+  pointer-events: none;
+  display: none;
+}
+#controlsNormalBanner {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 30px;
+  font-size: 2.5em;
+  color: #00FF00;
+  background: rgba(0,0,0,0.85);
+  border: 3px solid #00FF00;
+  border-radius: 10px;
+  z-index: 1003;
+  pointer-events: none;
+  display: none;
+}
+.inversion-border {
+  box-shadow: 0 0 0 4px #FF0000 inset !important;
+}

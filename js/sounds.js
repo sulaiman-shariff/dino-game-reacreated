@@ -5,6 +5,7 @@ export let backMusicController = null;
 export let jumpMusicController = null;
 export let collisionMusicController = null;
 export let coinMusicController = null;
+export let warningMusicController = null;
 
 export const music = () => {
   // create an AudioListener and add it to the camera
@@ -52,6 +53,16 @@ export const music = () => {
     coinMusicController.setBuffer(buffer);
     coinMusicController.setLoop(false);
     coinMusicController.setVolume(1);
+    add();
+  });
+
+  // create a global audio source for warning sound
+  warningMusicController = new THREE.Audio(listener);
+  // load a sound and set it as the Audio object's buffer
+  audioLoader.load("audio/warning.mp3", function (buffer) {
+    warningMusicController.setBuffer(buffer);
+    warningMusicController.setLoop(false);
+    warningMusicController.setVolume(1);
     add();
   });
 };
